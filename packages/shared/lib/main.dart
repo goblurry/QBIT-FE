@@ -9,6 +9,7 @@ import 'package:qbit_core/config/env_config.dart';
 import 'package:qbit_shared/theme/app_theme.dart';
 import 'package:qbit_services/auth/auth_service.dart';
 import 'package:qbit_services/api/api_client.dart';
+import 'package:qbit_services/auth/kakao_auth_service.dart';
 import 'package:qbit_shared/router/app_router.dart';
 
 void runQbitApp() async {
@@ -50,6 +51,15 @@ void runQbitApp() async {
     } else {
       debugPrint('ApiClient.initialize failed: $e');
       // 프로덕션에서는 앱을 계속 실행하되 로그만 남김
+    }
+  }
+
+  // 카카오 토큰 정보 출력 (앱 시작 시)
+  try {
+    await KakaoAuthService.printTokenInfo();
+  } catch (e) {
+    if (kDebugMode) {
+      debugPrint('카카오 토큰 정보 출력 실패: $e');
     }
   }
   

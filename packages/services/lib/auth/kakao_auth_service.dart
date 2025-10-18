@@ -14,6 +14,21 @@ final logger = Logger(
 );
 
 class KakaoAuthService {
+  /// 카카오 토큰 정보 출력 (디버깅용)
+  static Future<void> printTokenInfo() async {
+    try {
+      if (await AuthApi.instance.hasToken()) {
+        OAuthToken? token = await TokenManagerProvider.instance.manager.getToken();
+        
+        logger.i('🔑 카카오 액세스 토큰: ${token?.accessToken}');
+      } else {
+        logger.w('카카오 토큰이 없습니다');
+      }
+    } catch (e) {
+      logger.e('토큰 정보 조회 실패: $e');
+    }
+  }
+
   /// 카카오 로그인 실행
 
   /// 카카오톡 설치 여부에 따라 카카오톡 로그인 또는 카카오계정 로그인 시도
@@ -263,10 +278,10 @@ class KakaoAuthService {
     }
   }
 
-  /// 카카오 액세스 토큰 갱신
+  /// 카카오 액세스 토큰 갱신 (SDK 자동 갱신 활용)
   static Future<Map<String, dynamic>?> refreshAccessToken() async {
     try {
-      logger.i('카카오 액세스 토큰 갱신 시작');
+      logger.i('카카오 액세스 토큰 갱신 시작 (SDK 자동 갱신)');
       
       // 기존 토큰 확인
       if (!await AuthApi.instance.hasToken()) {
@@ -274,39 +289,31 @@ class KakaoAuthService {
         return {'success': false, 'error': '갱신할 토큰이 없습니다'};
       }
 
-      // 토큰 정보 확인 (만료 예외시 갱신 경로로 분기)
-      AccessTokenInfo tokenInfo;
+      // SDK의 자동 토큰 갱신 기능 활용
+      // getToken()을 호출하면 SDK가 내부적으로 토큰 만료 여부를 확인하고 자동 갱신
       try {
-        tokenInfo = await UserApi.instance.accessTokenInfo();
-      } on KakaoException catch (e) {
-        if (e.isInvalidTokenError()) {
-          logger.i('토큰이 만료되어 재로그인으로 갱신 시도');
-          // 바로 갱신 시도
-          return await _reloginAndBuildResult();
-        }
-        rethrow;
-      }
-      final now = DateTime.now();
-      final expiresAt = now.add(Duration(seconds: tokenInfo.expiresIn));
-      
-      // 토큰이 유효한지 확인 (expiresIn > 0이고 미래에 만료되는 경우만 유효)
-      if (tokenInfo.expiresIn > 0 && expiresAt.isAfter(now)) {
-        logger.i('토큰이 아직 유효합니다. 갱신 불필요');
         OAuthToken? token = await TokenManagerProvider.instance.manager.getToken();
+        if (token == null) {
+          logger.e('SDK에서 토큰을 가져올 수 없습니다');
+          return {'success': false, 'error': 'SDK에서 토큰을 가져올 수 없습니다'};
+        }
+
+        // 토큰 정보 확인
+        AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
+        
+        logger.i('SDK 자동 토큰 갱신 성공: userId=${tokenInfo.id}');
         return {
           'success': true,
-          'accessToken': token?.accessToken,
+          'accessToken': token.accessToken,
           'userId': tokenInfo.id.toString(),
-          'refreshed': false,
+          'refreshed': true, // SDK가 자동으로 갱신했을 가능성
         };
-      }
-
-      // 토큰 갱신 시도
-      try {
-        return await _reloginAndBuildResult();
-      } catch (refreshError) {
-        logger.e('카카오 토큰 갱신 실패: $refreshError');
-        return {'success': false, 'error': '토큰 갱신 실패: $refreshError'};
+      } on KakaoException catch (e) {
+        if (e.isInvalidTokenError()) {
+          logger.w('토큰이 완전히 만료되어 재로그인 필요');
+          return {'success': false, 'error': '토큰이 완전히 만료되어 재로그인이 필요합니다'};
+        }
+        rethrow;
       }
     } catch (error) {
       logger.e('카카오 토큰 갱신 중 예외 발생: $error');

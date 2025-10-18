@@ -6,6 +6,18 @@ final logger = Logger();
 
 class AuthApiService {
   static final Dio _dio = ApiClient.instance;
+  
+  // 토큰 재발급 전용 Dio 인스턴스 (토큰 인터셉터 없음)
+  static final Dio _refreshDio = Dio(BaseOptions(
+    baseUrl: ApiClient.baseUrl,
+    connectTimeout: const Duration(seconds: 10),
+    receiveTimeout: const Duration(seconds: 10),
+    sendTimeout: const Duration(seconds: 10),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      'Accept': 'application/json; charset=utf-8',
+    },
+  ));
 
   /// 카카오 로그인
   /// POST /auth/kakao/login
@@ -18,7 +30,7 @@ class AuthApiService {
     try {
       logger.i('카카오 로그인 API 호출 시작');
       
-      final response = await _dio.post(
+      final response = await _refreshDio.post(
         '/auth/kakao/login',
         data: {
           'kakaoAccessToken': kakaoAccessToken,
@@ -80,7 +92,7 @@ class AuthApiService {
     try {
       logger.i('토큰 갱신 API 호출 시작');
       
-      final response = await _dio.post(
+      final response = await _refreshDio.post(
         '/auth/refresh',
         data: {
           'refreshToken': refreshToken,
