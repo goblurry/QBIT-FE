@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qbit_shared/theme/app_colors.dart';
 import 'package:qbit_shared/theme/app_fonts.dart';
-import 'package:qbit_shared/widgets/common/header_basic.dart';
+import 'package:qbit_shared/widgets/common/app_header.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qbit_shared/widgets/common/padding/horizontal_inset.dart';
 
 class MyScreen extends StatefulWidget {
@@ -16,10 +17,25 @@ class _MyScreenState extends State<MyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const HeaderBasic(
+      appBar: AppHeader(
         title: '마이페이지',
-        onAlarmPressed: null,
-        onSettingPressed: null,
+        showBack: false,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-alarm.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-setting.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

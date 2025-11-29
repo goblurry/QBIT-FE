@@ -124,8 +124,9 @@ class _StockSearchScreenState extends State<StockSearchScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: HeaderBack(
-        title: '종목 검색',
+      appBar: AppHeader(
+        title: '주식 검색',
+        onBack: () => context.pop(),
       ),
       body: Column(
         children: [

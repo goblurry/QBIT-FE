@@ -52,7 +52,7 @@ class TextLinkButton extends StatelessWidget {
           ],
           Text(
             text,
-            style: AppFonts.b2Medium.copyWith(
+            style: AppFonts.b2Regular.copyWith(
               fontSize: fontSize ?? 14,
               fontWeight: fontWeight ?? FontWeight.w500,
               color: isDisabled ? AppColors.gray400 : effectiveTextColor,

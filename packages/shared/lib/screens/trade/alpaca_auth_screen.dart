@@ -18,8 +18,9 @@ class AlpacaAuthScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: HeaderBack(
-        title: '계좌 연결하기',
+      appBar: AppHeader( // Changed widget
+        title: 'Alpaca 연동', // Changed title
+        onBack: () => context.pop(), // Added onBack callback
       ),
       body: Container(
         width: double.infinity,

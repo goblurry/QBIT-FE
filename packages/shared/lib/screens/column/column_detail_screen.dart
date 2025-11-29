@@ -156,7 +156,7 @@ class _ColumnDetailScreenState extends State<ColumnDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: const HeaderBack(title: '칼럼'),
+      appBar: const AppHeader(title: '칼럼'),
       body: _isLoading
           ? const Center(
               child: CircularProgressIndicator(),

@@ -10,9 +10,9 @@ class AIReportDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F6), // Gray-50
-      appBar: HeaderBack(
-        title: '매매 리포트',
-        backgroundColor: const Color(0xFFFCE6B3), // Secondary-Light
+      appBar: AppHeader(
+        title: 'AI 리포트 상세',
+        onBack: () => context.pop(),
       ),
       body: SingleChildScrollView(
         child: Column(

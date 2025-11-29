@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:qbit_shared/theme/app_colors.dart';
 import 'package:qbit_shared/theme/app_fonts.dart';
-import 'package:qbit_shared/widgets/common/header_basic.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:qbit_shared/widgets/common/app_header.dart';
 import 'package:qbit_shared/utils/responsive_utils.dart';
 import 'package:qbit_services/api/learning_card_api_service.dart';
 import 'package:qbit_services/api/report_api_service.dart';
@@ -175,10 +176,25 @@ class _StudyScreenState extends State<StudyScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: HeaderBasic(
-        title: '이론 학습',
-        onAlarmPressed: () {},
-        onSettingPressed: () {},
+      appBar: AppHeader(
+        title: '학습',
+        showBack: false,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-alarm.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-setting.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

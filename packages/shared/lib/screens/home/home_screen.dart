@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qbit_shared/widgets/common/bottom_navigation_bar.dart';
-import 'package:qbit_shared/widgets/common/header_home.dart';
+import 'package:qbit_shared/widgets/common/app_header.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:qbit_shared/screens/study/study_screen.dart';
 import 'package:qbit_shared/screens/record/record_screen.dart';
 import 'package:qbit_shared/screens/trade/trade_screen.dart';
@@ -464,7 +465,30 @@ class _HomeContentScreenState extends State<HomeContentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.white,
-      appBar: const TopAppBar(),
+      appBar: AppHeader(
+        titleWidget: SvgPicture.asset(
+          'assets/icons/navigation/top-nav-QBIT-text-logo.svg',
+          height: 28,
+          fit: BoxFit.contain,
+        ),
+        showBack: false,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-alarm.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-setting.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [

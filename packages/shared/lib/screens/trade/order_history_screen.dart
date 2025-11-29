@@ -542,9 +542,9 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: HeaderBack(
-        title: '주문 내역 조회',
-        onBackPressed: () => context.pop(),
+      appBar: AppHeader(
+        title: '주문 내역',
+        onBack: () => context.pop(),
       ),
       body: Column(
         children: [

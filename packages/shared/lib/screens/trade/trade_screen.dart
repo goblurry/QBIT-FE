@@ -7,7 +7,7 @@ import 'package:dio/dio.dart';
 import 'package:qbit_shared/theme/app_colors.dart';
 import 'package:qbit_shared/theme/app_fonts.dart';
 import 'package:qbit_shared/widgets/common/common_widgets.dart';
-import 'package:qbit_shared/widgets/common/header_basic.dart';
+import 'package:qbit_shared/widgets/common/app_header.dart';
 import 'package:qbit_shared/widgets/common/button/filter_button.dart';
 import 'package:qbit_shared/widgets/common/padding/horizontal_inset.dart';
 import 'package:qbit_shared/utils/responsive_utils.dart';
@@ -1469,14 +1469,25 @@ class _TradeScreenState extends State<TradeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: HeaderBasic(
-        title: '모의투자',
-        onAlarmPressed: () {
-          // 알림 기능
-        },
-        onSettingPressed: () {
-          // 설정 기능
-        },
+      appBar: AppHeader(
+        title: '거래',
+        showBack: false,
+        actions: [
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-alarm.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: SvgPicture.asset(
+              'assets/icons/navigation/top-nav-setting.svg',
+              height: 26,
+            ),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(
